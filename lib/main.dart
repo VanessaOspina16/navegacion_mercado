@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'pantallas/productores.dart';
+
 void main() => runApp(const MercadoApp());
 
 class MercadoApp extends StatelessWidget {
@@ -9,9 +11,8 @@ class MercadoApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Mercado Campesino',
-      home: const Scaffold(
-        body: Center(child: Text('Mercado Campesino')),
-      ),
+      home: const ProductoresPage(),
     );
   }
 }
+
