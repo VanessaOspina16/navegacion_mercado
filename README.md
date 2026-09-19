@@ -1,17 +1,44 @@
-# navegacion_mercado
+# Mercado Campesino
 
-A new Flutter project.
+Aplicación móvil desarrollada en Flutter para facilitar la consulta y compra de productos ofrecidos por productores campesinos.
 
-## Getting Started
+## Flujo de navegación
 
-This project is a starting point for a Flutter application.
+El usuario inicia en la pantalla principal y puede consultar productores, productos y realizar una compra mediante el carrito.
 
-A few resources to get you started if this is your first Flutter project:
+INICIO
+  │
+  ├── Toca "Productores"
+  │          ↓
+  │     PRODUCTORES
+  │          │
+  │     Toca productor
+  │          ↓
+  │   DETALLE PRODUCTOR
+  │          │
+  │     Ver productos
+  │          ↓
+  │      PRODUCTOS
+  │          │
+  │     Toca producto
+  │          ↓
+  │   DETALLE PRODUCTO
+  │          │
+  │    Agregar al carrito
+  │          ↓
+  │       CARRITO
+  │          │
+  │   Continuar compra
+  │          ↓
+  │  CONFIRMAR PEDIDO
 
-- [Learn Flutter](https://docs.flutter.dev/get-started/learn-flutter)
-- [Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Flutter learning resources](https://docs.flutter.dev/reference/learning-resources)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## Tabla de navegación
+| Desde | Hacia | Acción del usuario | Método de Navigator | Datos que viajan | Pila después del salto |
+|---|---|---|---|---|---|
+| Inicio | Productores | Toca "Productores" | `Navigator.push` | Ninguno | Inicio → Productores |
+| Productores | Detalle productor | Toca un productor | `Navigator.push` | Productor seleccionado | Inicio → Productores → Detalle productor |
+| Detalle productor | Productos | Toca "Ver productos" | `Navigator.push` | Identificador del productor | Inicio → Productores → Detalle productor → Productos |
+| Inicio | Productos | Toca "Productos" | `Navigator.push` | Ninguno | Inicio → Productos |
+| Productos | Detalle producto | Toca un producto | `Navigator.push` | Producto seleccionado | Inicio → Productos → Detalle producto |
+| Detalle producto | Carrito | Toca "Agregar al carrito" | `Navigator.push` | Producto y cantidad | Inicio → Productos → Detalle producto → Carrito |
+| Carrito | Confirmar pedido | Toca "Continuar compra" | `Navigator.push` | Productos seleccionados y total | Inicio → Productos → Detalle producto → Carrito → Confirmar pedido |
