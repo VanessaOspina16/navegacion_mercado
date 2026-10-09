@@ -1,64 +1,55 @@
 # Mercado Campesino
 
-Aplicación móvil desarrollada en Flutter para facilitar la consulta y compra de productos ofrecidos por productores campesinos.
+Aplicación móvil desarrollada en Flutter para consultar productores campesinos.
+Los datos de ejemplo viven en el código; no se usa API ni base de datos.
 
-## Flujo de navegación
+## Integrantes y pantallas
 
-El usuario inicia en la pantalla principal, debe registrarse, luego  puede consultar productores, productos y realizar una compra mediante el carrito.
+Vanessa realiza individualmente las tres pantallas de este flujo: Inicio de
+sesión, Inicio y Cuenta. La actividad plantea un equipo de tres personas; la
+adaptación individual debe confirmarse con la docente.
 
-                         ┌─────────────────────┐
-                         │   INICIO / LOGIN    │
-                         │                     │
-                         │ ¿Ya tiene cuenta?   │
-                         └─────────┬───────────┘
-                                   │
-                    ┌──────────────┴──────────────┐
-                    │                             │
-             Toca "Iniciar sesión"         Toca "Registrarse"
-                    │                             │
-                    ↓                             ↓
-          ┌──────────────────┐          ┌──────────────────┐
-          │  INICIO SESIÓN   │          │     REGISTRO     │
-          │                  │          │                  │
-          │ Correo/usuario   │          │ Nombre           │
-          │ Contraseña       │          │ Correo           │
-          └────────┬─────────┘          │ Contraseña       │
-                   │                    └────────┬─────────┘
-                   │                             │
-                   │       Registro exitoso      │
-                   │◄────────────────────────────┘
-                   │
-                   │ Inicio de sesión exitoso
-                   ↓
-          ┌──────────────────┐
-          │      INICIO      │
-          └────────┬─────────┘
-                   │
-        ┌──────────┼───────────┐
-        ↓          ↓           ↓
-   Productores  Productos    Carrito
-        │          │           │
-        ↓          ↓           ↓
-   Detalle       Detalle    Resumen
-  productor     producto    compra
-        │          │
-        └────┬─────┘
-             ↓
-          Carrito
-             │
-             ↓
-      Confirmar pedido
+## Flujo diseñado
+
+```mermaid
+flowchart TD
+          Login[Inicio de sesión] -->|Iniciar sesión: push y correo| Inicio[Inicio / Productores]
+          Inicio -->|Tocar Cuenta: push y correo| Cuenta[Cuenta]
+          Cuenta -->|Cerrar sesión o Atrás: pop| Inicio
+          Inicio -->|Atrás del sistema: pop| Login
+```
 
 ## Tabla de navegación
-| Desde | Hacia | Acción del usuario | Método | ¿Por qué? | Datos que viajan | Pila |
+
+| Desde | Hacia | Acción del usuario | Método | ¿Por qué? | Datos que viajan | Pila después del salto |
 |---|---|---|---|---|---|---|
-| Inicio de sesión | Registro | Toca "Registrarse" | `Navigator.push` | Permite acceder al formulario sin perder la pantalla de inicio de sesión. | Ninguno | Login → Registro |
-| Registro | Inicio de sesión | Registro exitoso | `Navigator.pop` | Permite regresar al inicio de sesión una vez creado el usuario, sin agregar otra pantalla a la pila. | Resultado del registro | Login |
-| Inicio de sesión | Inicio | Toca "Ingresar" con credenciales válidas | `Navigator.pushReplacement` | Después de autenticarse, se reemplaza el login para evitar que el usuario vuelva a él al presionar Atrás. | Datos básicos del usuario | Inicio |
-| Inicio | Productores | Toca "Productores" | `Navigator.push` | Permite consultar los productores y regresar posteriormente al inicio. | Ninguno | Inicio → Productores |
-| Productores | Detalle productor | Toca un productor | `Navigator.push` | Permite consultar la información específica del productor conservando la lista. | Productor seleccionado | Inicio → Productores → Detalle productor |
-| Detalle productor | Productos | Toca "Ver productos" | `Navigator.push` | Permite consultar los productos asociados al productor. | ID del productor | Inicio → Productores → Detalle productor → Productos |
-| Inicio | Productos | Toca "Productos" | `Navigator.push` | Permite acceder directamente al catálogo. | Ninguno | Inicio → Productos |
-| Productos | Detalle producto | Toca un producto | `Navigator.push` | Permite consultar la información detallada del producto y regresar al catálogo. | Producto seleccionado | Inicio → Productos → Detalle producto |
-| Detalle producto | Carrito | Toca "Agregar al carrito" | `Navigator.push` | Permite continuar con la compra conservando el detalle del producto. | Producto y cantidad | Inicio → Productos → Detalle producto → Carrito |
-| Carrito | Confirmar pedido | Toca "Continuar compra" | `Navigator.push` | Permite pasar al resumen antes de confirmar el pedido. | Productos y total | Inicio → Productos → Detalle producto → Carrito → Confirmar pedido |
+| Inicio de sesión | Inicio | Escribe el correo y toca "Iniciar sesión" | `Navigator.push` | Abre la pantalla principal conservando el inicio de sesión debajo para que Atrás funcione como retorno. | El correo, recibido por el constructor de Inicio y mostrado en el saludo. | Inicio de sesión → Inicio |
+| Inicio | Cuenta | Toca "Cuenta" en la navegación inferior | `Navigator.push` | Permite consultar la cuenta y volver a Inicio sin reemplazarlo. | El mismo correo, recibido por el constructor de Cuenta y mostrado en pantalla. | Inicio de sesión → Inicio → Cuenta |
+| Cuenta | Inicio | Toca "Cerrar sesión" o Atrás del sistema | `Navigator.pop` | Regresa a la pantalla anterior y retira Cuenta de la pila. | No se envían datos nuevos. | Inicio de sesión → Inicio |
+| Inicio | Inicio de sesión | Presiona Atrás del sistema | `Navigator.pop` del sistema | Retira Inicio y vuelve a la pantalla que lo abrió. | No se envían datos nuevos. | Inicio de sesión |
+
+## Decisiones
+
+- Se eligió la combinación recomendada Inicio de sesión, Inicio y Cuenta para
+     limitar el flujo a tres pantallas y reutilizar la pantalla de productores.
+- Se usa `push` en ambos avances para conservar la pantalla anterior; `pop`
+     permite volver y hace observable el comportamiento de la pila.
+- El correo se captura en el inicio de sesión y se pasa explícitamente por
+     constructores. No hay autenticación real ni validación de campos en esta
+     actividad.
+- Los destinos que no pertenecen a este flujo no se implementan; los controles
+     de navegación ajenos a las tres pantallas quedan sin acción o se omiten.
+
+## Cambios respecto al diseño anterior
+
+El primer borrador incluía Registro, Productos, Detalle de producto, Carrito y
+Confirmación. Antes de implementar la navegación se redujo al trío recomendado
+Inicio de sesión, Inicio y Cuenta, para que el diagrama, la tabla y el código
+describan el mismo alcance.
+
+## Ayudas usadas
+
+- Guía de la actividad de navegación de Semana 5: requisitos, pantallas,
+     navegación, evaluación y sustentación.
+- GitHub Copilot: análisis de requisitos, actualización de este diseño e
+     implementación. Vanessa revisará y debe poder explicar cada parte del código.
