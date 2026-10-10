@@ -26,7 +26,7 @@ flowchart TD
 | Inicio de sesión | Inicio | Escribe el correo y toca "Iniciar sesión" | `Navigator.push` | Abre la pantalla principal conservando el inicio de sesión debajo para que Atrás funcione como retorno. | El correo, recibido por el constructor de Inicio y mostrado en el saludo. | Inicio de sesión → Inicio |
 | Inicio | Cuenta | Toca "Cuenta" en la navegación inferior | `Navigator.push` | Permite consultar la cuenta y volver a Inicio sin reemplazarlo. | El mismo correo, recibido por el constructor de Cuenta y mostrado en pantalla. | Inicio de sesión → Inicio → Cuenta |
 | Cuenta | Inicio | Toca "Cerrar sesión" o Atrás del sistema | `Navigator.pop` | Regresa a la pantalla anterior y retira Cuenta de la pila. | No se envían datos nuevos. | Inicio de sesión → Inicio |
-| Inicio | Inicio de sesión | Presiona Atrás del sistema | `Navigator.pop` del sistema | Retira Inicio y vuelve a la pantalla que lo abrió. | No se envían datos nuevos. | Inicio de sesión |
+| Inicio | Inicio de sesión | Toca "Cerrar sesión" o presiona Atrás del sistema | `Navigator.pop` | Retira Inicio y vuelve a la pantalla que lo abrió, con un botón y con el retorno del sistema. | No se envían datos nuevos. | Inicio de sesión |
 
 ## Decisiones
 
