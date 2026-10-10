@@ -31,24 +31,26 @@ class _InicioSesionPageState extends State<InicioSesionPage> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  const Icon(Icons.agriculture_rounded,
-                      size: 64, color: Color(0xFF4F9955)),
+                  const Icon(
+                    Icons.agriculture_rounded,
+                    size: 64,
+                    color: Color(0xFF4F9955),
+                  ),
                   const SizedBox(height: 24),
                   Text(
                     'Mercado Campesino',
                     textAlign: TextAlign.center,
                     style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                          fontWeight: FontWeight.w800,
-                          color: const Color(0xFF1E2A20),
-                        ),
+                      fontWeight: FontWeight.w800,
+                      color: const Color(0xFF1E2A20),
+                    ),
                   ),
                   const SizedBox(height: 8),
                   Text(
                     'Inicia sesión para descubrir productores locales',
                     textAlign: TextAlign.center,
-                    style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                          color: const Color(0xFF687267),
-                        ),
+                    style: Theme.of(context).textTheme.bodyLarge
+                        ?.copyWith(color: const Color(0xFF687267)),
                   ),
                   const SizedBox(height: 32),
                   TextField(
@@ -74,7 +76,8 @@ class _InicioSesionPageState extends State<InicioSesionPage> {
                   const SizedBox(height: 24),
                   FilledButton.icon(
                     key: const Key('loginButton'),
-                    onPressed: () => widget.onLogin(_emailController.text.trim()),
+                    onPressed: () =>
+                        widget.onLogin(_emailController.text.trim()),
                     icon: const Icon(Icons.login_rounded),
                     label: const Text('Iniciar sesión'),
                     style: FilledButton.styleFrom(
