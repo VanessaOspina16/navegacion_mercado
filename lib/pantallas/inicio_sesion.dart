@@ -11,6 +11,7 @@ class InicioSesionPage extends StatefulWidget {
 
 class _InicioSesionPageState extends State<InicioSesionPage> {
   final TextEditingController _emailController = TextEditingController();
+  bool _rememberSession = false;
 
   @override
   void dispose() {
@@ -35,6 +36,18 @@ class _InicioSesionPageState extends State<InicioSesionPage> {
                     Icons.agriculture_rounded,
                     size: 64,
                     color: Color(0xFF4F9955),
+                  ),
+                  SwitchListTile(
+                    key: const Key('rememberSwitch'),
+                    contentPadding: EdgeInsets.zero,
+                    title: const Text('Recordarme'),
+                    subtitle: const Text(
+                      'Mantener esta opción en esta pantalla',
+                    ),
+                    value: _rememberSession,
+                    onChanged: (value) {
+                      setState(() => _rememberSession = value);
+                    },
                   ),
                   const SizedBox(height: 24),
                   Text(

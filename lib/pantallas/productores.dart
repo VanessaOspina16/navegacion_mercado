@@ -36,6 +36,11 @@ class _ProductoresPageState extends State<ProductoresPage> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final visibleProducers = _selectedCategory == 'Todos'
+        ? producerData
+        : producerData
+              .where((producer) => producer.category == _selectedCategory)
+              .toList();
 
     return Scaffold(
       backgroundColor: const Color(0xFFF8F6F0),
@@ -48,57 +53,60 @@ class _ProductoresPageState extends State<ProductoresPage> {
               onLogoutPressed: widget.onLogoutPressed,
             ),
             Expanded(
-              child: ListView(
-                padding: const EdgeInsets.fromLTRB(20, 8, 20, 24),
-                children: [
-                  _SearchBar(controller: _searchController),
-                  const SizedBox(height: 18),
-                  _CategoryFilters(
-                    selectedCategory: _selectedCategory,
-                    onCategorySelected: (category) {
-                      setState(() => _selectedCategory = category);
-                    },
-                  ),
-                  const SizedBox(height: 22),
-                  _FeaturedBanner(onPressed: () {}),
-                  const SizedBox(height: 28),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      Text(
-                        'Productores destacados',
-                        style: theme.textTheme.headlineSmall?.copyWith(
-                          fontWeight: FontWeight.w800,
-                          color: const Color(0xFF1E2A20),
+              child: Scrollbar(
+                thumbVisibility: true,
+                child: ListView(
+                  padding: const EdgeInsets.fromLTRB(20, 8, 20, 24),
+                  children: [
+                    _SearchBar(controller: _searchController),
+                    const SizedBox(height: 18),
+                    _CategoryFilters(
+                      selectedCategory: _selectedCategory,
+                      onCategorySelected: (category) {
+                        setState(() => _selectedCategory = category);
+                      },
+                    ),
+                    const SizedBox(height: 22),
+                    _FeaturedBanner(onPressed: () {}),
+                    const SizedBox(height: 28),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        Text(
+                          'Productores destacados',
+                          style: theme.textTheme.headlineSmall?.copyWith(
+                            fontWeight: FontWeight.w800,
+                            color: const Color(0xFF1E2A20),
+                          ),
                         ),
-                      ),
-                      Text(
-                        '${producerData.length} cerca de ti',
-                        style: theme.textTheme.bodyMedium?.copyWith(
-                          color: const Color(0xFF6D766C),
-                          fontWeight: FontWeight.w600,
+                        Text(
+                          '${visibleProducers.length} cerca de ti',
+                          style: theme.textTheme.bodyMedium?.copyWith(
+                            color: const Color(0xFF6D766C),
+                            fontWeight: FontWeight.w600,
+                          ),
                         ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 14),
-                  ListView.builder(
-                    itemCount: producerData.length,
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    itemBuilder: (context, index) {
-                      final producer = producerData[index];
-                      return Padding(
-                        padding: const EdgeInsets.only(bottom: 14),
-                        child: ProducerCard(
-                          producer: producer,
-                          onPressed: () {},
-                        ),
-                      );
-                    },
-                  ),
-                ],
+                      ],
+                    ),
+                    const SizedBox(height: 14),
+                    ListView.builder(
+                      itemCount: visibleProducers.length,
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemBuilder: (context, index) {
+                        final producer = visibleProducers[index];
+                        return Padding(
+                          padding: const EdgeInsets.only(bottom: 14),
+                          child: ProducerCard(
+                            producer: producer,
+                            onPressed: () {},
+                          ),
+                        );
+                      },
+                    ),
+                  ],
+                ),
               ),
             ),
           ],
@@ -279,7 +287,8 @@ class _CategoryFilters extends StatelessWidget {
         itemBuilder: (context, index) {
           final category = categories[index];
           final isSelected = category == selectedCategory;
-          return ChoiceChip(
+          return FilterChip(
+            key: Key('category-$category'),
             label: Text(category),
             selected: isSelected,
             onSelected: (_) => onCategorySelected(category),
@@ -477,6 +486,7 @@ class Producer {
     required this.name,
     required this.vereda,
     required this.distance,
+    required this.category,
     required this.products,
     required this.icon,
     required this.color,
@@ -486,6 +496,7 @@ class Producer {
   final String name;
   final String vereda;
   final String distance;
+  final String category;
   final int products;
   final IconData icon;
   final Color color;
@@ -497,6 +508,7 @@ const producerData = [
     name: 'Finca La Esperanza',
     vereda: 'Vereda Pantanillo',
     distance: '3.2 km',
+    category: 'Frutas',
     products: 12,
     icon: Icons.eco_rounded,
     color: Color(0xFFE3F0D9),
@@ -506,6 +518,7 @@ const producerData = [
     name: 'Huerta Dona Rosa',
     vereda: 'Vereda San José',
     distance: '5.1 km',
+    category: 'Verduras',
     products: 7,
     icon: Icons.grass_rounded,
     color: Color(0xFFDCEEDC),
@@ -515,6 +528,7 @@ const producerData = [
     name: 'Asociacion El Manantial',
     vereda: 'Vereda Abreo',
     distance: '8.4 km',
+    category: 'Verduras',
     products: 15,
     icon: Icons.water_drop_outlined,
     color: Color(0xFFDCEAF0),
@@ -524,6 +538,7 @@ const producerData = [
     name: 'Granja Los Alpes',
     vereda: 'Vereda La Honda',
     distance: '10.0 km',
+    category: 'Lacteos',
     products: 5,
     icon: Icons.egg_alt_outlined,
     color: Color(0xFFFFEBD3),
@@ -533,6 +548,7 @@ const producerData = [
     name: 'Cafe Montanas Vivas',
     vereda: 'Vereda La Salada',
     distance: '42 km',
+    category: 'Cafe',
     products: 9,
     icon: Icons.coffee_rounded,
     color: Color(0xFFE9DFD4),
