@@ -11,7 +11,7 @@ class MercadoApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Mercado Campesino',
-      home: const ProductoresPage(),
+      home: const ProductoresPage(email: 'camila@mercado.com'),
     );
   }
 }

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 
 class ProductoresPage extends StatefulWidget {
-	const ProductoresPage({super.key});
+	const ProductoresPage({super.key, required this.email});
+
+	final String email;
 
 	@override
 	State<ProductoresPage> createState() => _ProductoresPageState();
@@ -27,7 +29,7 @@ class _ProductoresPageState extends State<ProductoresPage> {
 			body: SafeArea(
 				child: Column(
 					children: [
-						_Header(onLocationPressed: () {}),
+						_Header(email: widget.email, onLocationPressed: () {}),
 						Expanded(
 							child: ListView(
 								padding: const EdgeInsets.fromLTRB(20, 8, 20, 24),
@@ -96,8 +98,9 @@ class _ProductoresPageState extends State<ProductoresPage> {
 }
 
 class _Header extends StatelessWidget {
-	const _Header({required this.onLocationPressed});
+	const _Header({required this.email, required this.onLocationPressed});
 
+	final String email;
 	final VoidCallback onLocationPressed;
 
 	@override
@@ -112,11 +115,13 @@ class _Header extends StatelessWidget {
 							crossAxisAlignment: CrossAxisAlignment.start,
 							children: [
 								Text(
-									'Hola, Camila',
+									'Hola, $email',
 									style: Theme.of(context).textTheme.titleMedium?.copyWith(
 												color: const Color(0xFF687267),
 												fontWeight: FontWeight.w600,
 											),
+									maxLines: 1,
+									overflow: TextOverflow.ellipsis,
 								),
 								const SizedBox(height: 5),
 								Text(
@@ -373,7 +378,7 @@ class ProducerCard extends StatelessWidget {
 														fontSize: 17,
 														fontWeight: FontWeight.w800)),
 										const SizedBox(height: 4),
-										Text('${producer.region}  |  ${producer.distance}',
+										Text('${producer.vereda}  |  ${producer.distance}',
 												style: const TextStyle(
 														color: Color(0xFF788178), fontSize: 13)),
 										const SizedBox(height: 9),
@@ -438,7 +443,7 @@ class BottomNavigation extends StatelessWidget {
 class Producer {
 	const Producer({
 		required this.name,
-		required this.region,
+		required this.vereda,
 		required this.distance,
 		required this.products,
 		required this.icon,
@@ -447,7 +452,7 @@ class Producer {
 	});
 
 	final String name;
-	final String region;
+	final String vereda;
 	final String distance;
 	final int products;
 	final IconData icon;
@@ -458,7 +463,7 @@ class Producer {
 const producerData = [
 	Producer(
 		name: 'Finca La Esperanza',
-		region: 'El Retiro, Antioquia',
+		vereda: 'Vereda Pantanillo',
 		distance: '3.2 km',
 		products: 12,
 		icon: Icons.eco_rounded,
@@ -467,7 +472,7 @@ const producerData = [
 	),
 	Producer(
 		name: 'Huerta Dona Rosa',
-		region: 'La Ceja, Antioquia',
+		vereda: 'Vereda San José',
 		distance: '5.1 km',
 		products: 7,
 		icon: Icons.grass_rounded,
@@ -476,7 +481,7 @@ const producerData = [
 	),
 	Producer(
 		name: 'Asociacion El Manantial',
-		region: 'Rionegro, Antioquia',
+		vereda: 'Vereda Abreo',
 		distance: '8.4 km',
 		products: 15,
 		icon: Icons.water_drop_outlined,
@@ -485,7 +490,7 @@ const producerData = [
 	),
 	Producer(
 		name: 'Granja Los Alpes',
-		region: 'Guarne, Antioquia',
+		vereda: 'Vereda La Honda',
 		distance: '10.0 km',
 		products: 5,
 		icon: Icons.egg_alt_outlined,
@@ -494,7 +499,7 @@ const producerData = [
 	),
 	Producer(
 		name: 'Cafe Montanas Vivas',
-		region: 'Jardin, Antioquia',
+		vereda: 'Vereda La Salada',
 		distance: '42 km',
 		products: 9,
 		icon: Icons.coffee_rounded,
