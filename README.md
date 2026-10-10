@@ -56,3 +56,8 @@ flujo que sí existe en el código: Inicio de sesión → Inicio → Cuenta.
 - GitHub Copilot: apoyo para analizar la guía, organizar la documentación y
      desarrollar y verificar el flujo. La autora debe poder explicar y modificar
      el código durante la sustentación.
+
+## Actividad de widgets
+
+La investigación de los tres widgets nuevos usados en la app está en
+[activities/widgets/widgets_ospina_vanessa.md](activities/widgets/widgets_ospina_vanessa.md).
